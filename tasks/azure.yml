@@ -1,6 +1,7 @@
 ---
-- debug: msg={{item}}   
-  with_items: ansible_mounts
+- debug: msg={{item.mount}}   
+  with_items: 
+    - "{{ ansible_mounts }}"
 
 - name: Azure | 1.1.4 | Ensure nodev option set on /home partition.
   mount:
