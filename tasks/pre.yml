@@ -1,0 +1,6 @@
+---
+- name: "Ensure separate partition exists for /home"
+  shell: mount | grep "on /home "
+  register: home_mounted
+  changed_when: false
+  failed_when: false

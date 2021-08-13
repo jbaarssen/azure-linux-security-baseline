@@ -16,5 +16,8 @@
   tags:
       - always
 
+- include: pre.yml
+  become: true
+
 - include: azure.yml
   become: true
