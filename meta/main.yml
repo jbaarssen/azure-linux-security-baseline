@@ -1,11 +1,11 @@
 ---
 galaxy_info:
-  author: "florianutz"
-  role_name: ubuntu1804_cis
-  description: "Ansible role to apply Ubuntu 18.04 CIS Baseline"
+  author: "janbaarssen"
+  role_name: ubuntu1804_azure_benchmark
+  description: "Ansible role to apply Ubuntu 18.04 Azure Security Baseline"
   company: "none"
   license: MIT
-  min_ansible_version: 2.6
+  min_ansible_version: "2.6"
 
 
   platforms:
@@ -18,8 +18,6 @@ galaxy_info:
     - security
     - cis
     - hardening
+    - azure
 
 dependencies: []
-
-collections:
-  - ansible.posix

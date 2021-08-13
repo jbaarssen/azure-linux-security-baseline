@@ -1,0 +1,852 @@
+---
+- name: Azure | 1.1.4 | Ensure nodev option set on /home partition.
+  mount:
+    name: "/home"
+    src: "{{ item.device }}"
+    state: mounted
+    fstype: "{{ item.fstype }}"
+    opts: "nodev"
+    when:
+      - item.mount == "/home"
+  with_items:
+    - "{{ ansible_mounts }}"
+
+- name: Azure | 1.1.5 | Ensure nodev option set on /tmp partition.\n
+        Azure | 1.1.7 | Ensure nosuid option set on /tmp partition.
+  ini_file:
+    path: "{{ item }}"
+    section: Mount
+    option: Options
+    value: "nodev,nosuid"
+    no_extra_spaces: true
+  with_items:
+    - /usr/share/systemd/tmp.mount
+    - /etc/systemd/system/tmp.mount
+
+- name: Azure | 1.1.6 | Ensure nodev option set on /var/tmp partition.\n
+        Azure | 1.1.8 | Ensure nosuid option set on /var/tmp partition.\n
+        Azure | 1.1.9 | Ensure noexec option set on /var/tmp partition.
+  mount:
+    name: /var/tmp
+    src: /tmp
+    state: mounted
+    fstype: false
+    opts: "nodev,nosuid,noexec"
+
+# - name: Azure | 1.1.16 | Ensure noexec option set on /dev/shm partition.
+
+# - name: Azure | 1.1.21 | Disable automounting
+
+# - name: Azure | 1.1.21.1 | Ensure mounting of USB storage devices is disabled
+
+# - name: Azure | 1.5.1 | Ensure core dumps are restricted.
+
+# - name: Azure | 1.5.4 | Ensure prelink is disabled.
+
+# - name: Azure | 1.7.1.4 | Ensure permissions on /etc/motd are configured.
+
+# - name: Azure | 1.7.1.5 | Ensure permissions on /etc/issue are configured.
+
+# - name: Azure | 1.7.1.6 | Ensure permissions on /etc/issue.net are configured.
+
+# - name: Azure | 2.1 | The nodev option should be enabled for all removable media.
+
+# - name: Azure | 2.2 | The noexec option should be enabled for all removable media.
+
+# - name: Azure | 2.3 | The nosuid option should be enabled for all removable media.
+
+# - name: Azure | 2.3.3 | Ensure talk client is not installed.
+
+# - name: Azure | 3.4.4 | Ensure permissions on /etc/hosts.allow are configured.
+
+# - name: Azure | 3.4.5 | Ensure permissions on /etc/hosts.deny are configured.
+
+# - name: Azure | 3.6.2 | Ensure default deny firewall policy
+
+# - name: Azure | 5 | The nodev/nosuid option should be enabled for all NFS mounts.
+
+# - name: Azure | 5.2.1 | Ensure permissions on /etc/ssh/sshd_config are configured.
+
+# - name: Azure | 5.3.1 | Ensure password creation requirements are configured.
+
+# - name: Azure | 5.3.2 | Ensure lockout for failed password attempts is configured.
+
+# - name: Azure | 6.1 | Disable the installation and use of file systems that are not required (cramfs)
+
+# - name: Azure | 6.2 | Disable the installation and use of file systems that are not required (freevxfs)
+
+# - name: Azure | 6.2.7 | Ensure all users' home directories exist
+
+# - name: Azure | 6.2.9 | Ensure users own their home directories
+
+# - name: Azure | 6.2.10 | Ensure users' dot files are not group or world writable.
+
+# - name: Azure | 6.2.11 | Ensure no users have .forward files
+
+# - name: Azure | 6.2.12 | Ensure no users have .netrc files
+
+# - name: Azure | 6.2.14 | Ensure no users have .rhosts files
+
+# - name: Azure | 6.2.15 | Ensure all groups in /etc/passwd exist in /etc/group
+
+# - name: Azure | 6.2.16 | Ensure no duplicate UIDs exist
+
+# - name: Azure | 6.2.17 | Ensure no duplicate GIDs exist
+
+# - name: Azure | 6.2.18 | Ensure no duplicate user names exist
+
+# - name: Azure | 6.2.19 | Ensure no duplicate groups exist
+
+# - name: Azure | 6.2.20 | Ensure shadow group is empty
+
+# - name: Azure | 6.3 | Disable the installation and use of file systems that are not required (hfs)
+
+# - name: Azure | 6.4 | Disable the installation and use of file systems that are not required (hfsplus)
+
+# - name: Azure | 6.5 | Disable the installation and use of file systems that are not required (jffs2)
+
+# - name: Azure | 10 | Kernels should only be compiled from approved sources.
+
+# - name: Azure | 11.1 | /etc/shadow file permissions should be set to 0400
+
+# - name: Azure | 11.3 | /etc/shadow- file permissions should be set to 0400
+
+# - name: Azure | 11.4 | /etc/gshadow- file permissions should be set to 0400
+
+# - name: Azure | 12.1 | /etc/passwd file permissions should be 0644
+
+# - name: Azure | 12.2 | /etc/group file permissions should be 0644
+
+# - name: Azure | 12.3 | /etc/passwd- file permissions should be set to 0600
+
+# - name: Azure | 12.4 | /etc/group- file permissions should be 0644
+
+# - name: Azure | 21 | Access to the root account via su should be restricted to the 'root' group
+
+# - name: Azure | 22 | The 'root' group should exist, and contain all members who can su to root
+
+# - name: Azure | 23.2 | All accounts should have a password
+
+# - name: Azure | 24 | Accounts other than root must have unique UIDs greater than zero(0)
+
+# - name: Azure | 25 | Randomized placement of virtual memory regions should be enabled
+
+# - name: Azure | 26 | Kernel support for the XD/NX processor feature should be enabled
+
+# - name: Azure | 27.1 | The '.' should not appear in root's $PATH
+
+# - name: Azure | 28 | User home directories should be mode 750 or more restrictive
+
+# - name: Azure | 29 | The default umask for all users should be set to 077 in login.defs
+
+# - name: Azure | 31 | All bootloaders should have password protection enabled.
+
+# - name: Azure | 31.1 | Ensure permissions on bootloader config are configured
+
+# - name: Azure | 33 | Ensure authentication required for single user mode.
+
+# - name: Azure | 38.3 | Ensure packet redirect sending is disabled.
+
+# - name: Azure | 38.4 | Sending ICMP redirects should be disabled for all interfaces. (net.ipv4.conf.default.accept_redirects = 0)
+
+# - name: Azure | 38.5 | Sending ICMP redirects should be disabled for all interfaces. (net.ipv4.conf.default.secure_redirects = 0)
+
+# - name: Azure | 40.1 | Accepting source routed packets should be disabled for all interfaces. (net.ipv4.conf.all.accept_source_route = 0)
+
+# - name: Azure | 40.2 | Accepting source routed packets should be disabled for all interfaces. (net.ipv6.conf.all.accept_source_route = 0)
+
+# - name: Azure | 42.1 | The default setting for accepting source routed packets should be disabled for network interfaces. (net.ipv4.conf.default.accept_source_route = 0)
+
+# - name: Azure | 42.2 | The default setting for accepting source routed packets should be disabled for network interfaces. (net.ipv6.conf.default.accept_source_route = 0)
+
+# - name: Azure | 43 | Ignoring bogus ICMP responses to broadcasts should be enabled. (net.ipv4.icmp_ignore_bogus_error_responses = 1)
+
+# - name: Azure | 44 | Ignoring ICMP echo requests (pings) sent to broadcast / multicast addresses should be enabled. (net.ipv4.icmp_echo_ignore_broadcasts = 1)
+
+# - name: Azure | 45.1 | Logging of martian packets (those with impossible addresses) should be enabled for all interfaces. (net.ipv4.conf.all.log_martians = 1)
+
+# - name: Azure | 46.1 | Performing source validation by reverse path should be enabled for all interfaces. (net.ipv4.conf.all.rp_filter = 1)
+
+# - name: Azure | 46.2 | Performing source validation by reverse path should be enabled for all interfaces. (net.ipv4.conf.default.rp_filter = 1)
+
+# - name: Azure | 47 | TCP SYN cookies should be enabled. (net.ipv4.tcp_syncookies = 1)
+
+# - name: Azure | 48 | The system should not act as a network sniffer.
+
+# - name: Azure | 49 | All wireless interfaces should be disabled.
+
+# - name: Azure | 50 | The IPv6 protocol should be enabled.
+
+# - name: Azure | 54 | Ensure DCCP is disabled
+
+# - name: Azure | 55 | Ensure SCTP is disabled
+
+# - name: Azure | 56 | Disable support for RDS.
+
+# - name: Azure | 57 | Ensure TIPC is disabled
+
+# - name: Azure | 60 | Ensure logging is configured
+
+# - name: Azure | 61 | The syslog, rsyslog, or syslog-ng package should be installed.
+
+# - name: Azure | 61.1 | The systemd-journald service should be configured to persists log messages
+
+# - name: Azure | 62 | Ensure a logging service is enabled
+
+# - name: Azure | 63 | File permissions for all rsyslog log files should be set to 640 or 600.
+
+# - name: Azure | 63.1 | Ensure logger configuration files are restricted.
+
+# - name: Azure | 64 | All rsyslog log files should be owned by the adm group.
+
+# - name: Azure | 65 | All rsyslog log files should be owned by the syslog user.
+
+# - name: Azure | 68 | Rsyslog should not accept remote messages.
+
+# - name: Azure | 69 | The rlogin service should be disabled.
+
+# - name: Azure | 70.1 | Disable inetd unless required. (inetd)
+
+# - name: Azure | 70.2 | Disable xinetd unless required. (xinetd)
+
+# - name: Azure | 71.1 | Install inetd only if appropriate and required by your distro. Secure according to current hardening standards. (if required)
+
+# - name: Azure | 71.2 | Install xinetd only if appropriate and required by your distro. Secure according to current hardening standards. (if required)
+
+# - name: Azure | 72 | The telnet service should be disabled.
+
+# - name: Azure | 73 | All telnetd packages should be uninstalled.
+
+# - name: Azure | 74 | The rcp/rsh service should be disabled.
+
+# - name: Azure | 77 | The rsh-server package should be uninstalled.
+
+# - name: Azure | 78 | The ypbind service should be disabled.
+
+# - name: Azure | 79 | The nis package should be uninstalled.
+
+# - name: Azure | 80 | The tftp service should be disabled.
+
+# - name: Azure | 81 | The tftpd package should be uninstalled.
+
+# - name: Azure | 82 | The readahead-fedora package should be uninstalled.
+
+# - name: Azure | 84 | The bluetooth/hidd service should be disabled.
+
+# - name: Azure | 86 | The isdn service should be disabled.
+
+# - name: Azure | 87 | The isdnutils-base package should be uninstalled.
+
+# - name: Azure | 88 | The kdump service should be disabled.
+
+# - name: Azure | 89 | Zeroconf networking should be disabled.
+
+# - name: Azure | 90 | The crond service should be enabled.
+
+# - name: Azure | 91 | File permissions for /etc/anacrontab should be set to root:root 600.
+
+# - name: Azure | 93 | Ensure permissions on /etc/cron.d are configured.
+
+# - name: Azure | 94 | Ensure permissions on /etc/cron.daily are configured.
+
+# - name: Azure | 95 | Ensure permissions on /etc/cron.hourly are configured.
+
+# - name: Azure | 96 | Ensure permissions on /etc/cron.monthly are configured.
+
+# - name: Azure | 97 | Ensure permissions on /etc/cron.weekly are configured.
+
+# - name: Azure | 98 | Ensure at/cron is restricted to authorized users
+
+# - name: Azure | 106.1 | SSH must be configured and managed to meet best practices. - '/etc/ssh/sshd_config Protocol = 2'
+
+# - name: Azure | 106.3 | SSH must be configured and managed to meet best practices. - '/etc/ssh/sshd_config IgnoreRhosts = yes'
+
+# - name: Azure | 106.5 | Ensure SSH LogLevel is set to INFO
+
+# - name: Azure | 106.7 | Ensure SSH MaxAuthTries is set to 6 or less
+
+# - name: Azure | 106.11 | Ensure SSH access is limited
+
+# - name: Azure | 107 | Emulation of the rsh command through the ssh server should be disabled. - '/etc/ssh/sshd_config RhostsRSAAuthentication = no'
+
+# - name: Azure | 108 | SSH host-based authentication should be disabled. - '/etc/ssh/sshd_config HostbasedAuthentication = no'
+
+# - name: Azure | 109 | Root login via SSH should be disabled. - '/etc/ssh/sshd_config PermitRootLogin = no'
+
+# - name: Azure | 110 | Remote connections from accounts with empty passwords should be disabled. - '/etc/ssh/sshd_config PermitEmptyPasswords = no'
+
+# - name: Azure | 110.1 | Ensure SSH Idle Timeout Interval is configured.
+
+# - name: Azure | 110.2 | Ensure SSH LoginGraceTime is set to one minute or less.
+
+# - name: Azure | 110.3 | Ensure only approved MAC algorithms are used
+
+# - name: Azure | 111 | Ensure remote login warning banner is configured properly.
+
+# - name: Azure | 111.1 | Ensure local login warning banner is configured properly.
+
+# - name: Azure | 111.2 | SSH warning banner should be enabled. - '/etc/ssh/sshd_config Banner = /etc/issue.net'
+
+# - name: Azure | 112 | Users are not allowed to set environment options for SSH.
+
+# - name: Azure | 113 | Appropriate ciphers should be used for SSH. (Ciphers aes128-ctr,aes192-ctr,aes256-ctr)
+
+# - name: Azure | 114 | The avahi-daemon service should be disabled.
+
+# - name: Azure | 115 | The cups service should be disabled.
+
+# - name: Azure | 116 | The isc-dhcpd service should be disabled.
+
+# - name: Azure | 117 | The isc-dhcp-server package should be uninstalled.
+
+# - name: Azure | 120 | The sendmail package should be uninstalled.
+
+# - name: Azure | 121 | The postfix package should be uninstalled.
+
+# - name: Azure | 122 | Postfix network listening should be disabled as appropriate.
+
+# - name: Azure | 124 | The ldap service should be disabled.
+
+# - name: Azure | 126 | The rpcgssd service should be disabled.
+
+# - name: Azure | 127 | The rpcidmapd service should be disabled.
+
+# - name: Azure | 129 | The portmap service should be disabled.
+
+# - name: Azure | 130 | The rpcsvcgssd service should be disabled.
+
+# - name: Azure | 131 | The named service should be disabled.
+
+# - name: Azure | 132 | The bind package should be uninstalled.
+
+# - name: Azure | 137 | The dovecot service should be disabled.
+
+# - name: Azure | 138 | The dovecot package should be uninstalled.
+
+# - name: Azure | 156.1 | Ensure no legacy + entries exist in /etc/passwd
+
+# - name: Azure | 156.3 | Ensure no legacy + entries exist in /etc/group
+
+# - name: Azure | 157.1 | Ensure password expiration is 365 days or less.
+
+# - name: Azure | 157.2 | Ensure password expiration warning days is 7 or more.
+
+# - name: Azure | 157.5 | Ensure password reuse is limited.
+
+# - name: Azure | 157.11 | Ensure password hashing algorithm is SHA-512
+
+# - name: Azure | 157.12 | Ensure minimum days between password changes is 7 or more.
+
+# - name: Azure | 157.14 | Ensure all users last password change date is in the past
+
+# - name: Azure | 157.15 | Ensure system accounts are non-login
+
+# - name: Azure | 157.16 | Ensure default group for the root account is GID 0
+
+# - name: Azure | 157.18 | Ensure root is the only UID 0 account
+
+# - name: Azure | 158 | Remove unnecessary packages
+
+# - name: Azure | 159 | Remove unnecessary accounts
+
+# - name: Azure | 162 | Ensure auditd service is enabled
+
+# - name: Azure | 163 | Run AuditD service
+
+# - name: Azure | 179 | Ensure SNMP Server is not enabled
+
+# - name: Azure | 181 | Ensure rsync service is not enabled
+
+# - name: Azure | 182 | Ensure NIS server is not enabled
+
+# - name: Azure | 183 | Ensure rsh client is not installed
+
+# - name: Azure | 185 | Disable SMB V1 with Samba
+
+# - name: VMSS | PATCH | Ensure mounting of USB storage devices is disabled
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install usb-storage(\\s|$)"
+#     line: "install usb-storage /bin/true"
+#     state: present
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_1_1_23
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - udf
+#     - filesystems
+#     - rule_1.1.23
+
+# - name: "VMSS | PATCH | Ensure core dumps are restricted"
+#   sysctl:
+#     name: fs.suid_dumpable
+#     value: "0"
+#     state: present
+#     reload: true
+#     sysctl_set: true
+#     ignoreerrors: true
+#   when:
+#     - ubuntu1804cis_rule_1_6_4
+#   tags:
+#     - level1
+#     - scored
+#     - sysctl
+#     - patch
+#     - rule_1.6.4
+
+# - name: "VMSS | PATCH | Ensure mounting of cramfs filesystems is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install cramfs(\\s|$)"
+#     line: "install cramfs /bin/true"
+#     state: present
+#     owner: root
+#     group: root
+#     mode: 0644
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_1
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - cramfs
+#     - filesystems
+#     - rule_1.1.1.1
+
+# - name: "VMSS | PATCH | Remove cramfs module"
+#   modprobe:
+#     name: cramfs
+#     state: absent
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_1
+#     - not ubuntu1804cis_skip_for_travis
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - cramfs
+#     - filesystems
+#     - rule_1.1.1.1
+
+# - name: "VMSS | PATCH | Ensure mounting of freevxfs filesystems is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install freevxfs"
+#     line: "install freevxfs /bin/true"
+#     state: present
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_2
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - freevxfs
+#     - filesystems
+#     - rule_1.1.1.2
+
+# - name: "VMSS | PATCH | Remove freevxfs module"
+#   modprobe:
+#     name: freevxfs
+#     state: absent
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_2
+#     - not ubuntu1804cis_skip_for_travis
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - freevxfs
+#     - filesystems
+#     - rule_1.1.1.2
+
+# - name: "VMSS | PATCH | Ensure mounting of jffs2 filesystems is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install jffs2(\\s|$)"
+#     line: "install jffs2 /bin/true"
+#     state: present
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_3
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - jffs2
+#     - filesystems
+#     - rule_1.1.1.3
+
+# - name: "SCORED | 1.1.1.3 | PATCH | Remove jffs2 module"
+#   modprobe:
+#     name: jffs2
+#     state: absent
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_3
+#     - not ubuntu1804cis_skip_for_travis
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - jffs2
+#     - filesystems
+#     - rule_1.1.1.3
+
+# - name: "VMSS | PATCH | Ensure mounting of hfs filesystems is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install hfs(\\s|$)"
+#     line: "install hfs /bin/true"
+#     state: present
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_4
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - hfs
+#     - filesystems
+#     - rule_1.1.1.4
+
+# - name: "VMSS | PATCH | Remove hfs module"
+#   modprobe:
+#     name: hfs
+#     state: absent
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_4
+#     - not ubuntu1804cis_skip_for_travis
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - hfs
+#     - filesystems
+#     - rule_1.1.1.4
+
+# - name: "VMSS | PATCH | Ensure mounting of hfsplus filesystems is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install hfsplus(\\s|$)"
+#     line: "install hfsplus /bin/true"
+#     state: present
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_5
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - hfsplus
+#     - filesystems
+#     - rule_1.1.1.5
+
+# - name: "VMSS | PATCH | Remove hfsplus module"
+#   modprobe:
+#     name: hfsplus
+#     state: absent
+#   when:
+#     - ubuntu1804cis_rule_1_1_1_5
+#     - not ubuntu1804cis_skip_for_travis
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - hfsplus
+#     - filesystems
+#     - rule_1.1.1.5
+
+# - name: "VMSS | PATCH | Ensure permissions on /etc/shadow are configured"
+#   file:
+#     dest: /etc/shadow
+#     owner: root
+#     group: shadow
+#     mode: 0400
+#   when:
+#     - ubuntu1804cis_rule_6_1_4
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - rule_6.1.4
+
+# - name: "VMSS | PATCH | Ensure permissions on /etc/shadow- are configured"
+#   file:
+#     dest: /etc/shadow-
+#     owner: root
+#     group: shadow
+#     mode: 0400
+#   when:
+#     - ubuntu1804cis_rule_6_1_7
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - rule_6.1.7
+
+# - name: "VMSS | PATCH | Ensure permissions on /etc/gshadow are configured"
+#   file:
+#     dest: /etc/gshadow
+#     owner: root
+#     group: shadow
+#     mode: 0400
+#   when:
+#     - ubuntu1804cis_rule_6_1_4
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - rule_6.1.4
+
+# - name: "VMSS | PATCH | Ensure permissions on /etc/gshadow- are configured"
+#   file:
+#     dest: /etc/gshadow-
+#     owner: root
+#     group: shadow
+#     mode: 0400
+#   when:
+#     - ubuntu1804cis_rule_6_1_7
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - rule_6.1.7
+
+# - name: "VMSS | PATCH | Ensure permissions on /etc/passwd- are configured"
+#   file:
+#     dest: /etc/passwd-
+#     owner: root
+#     group: root
+#     mode: 0600
+#   when:
+#     - ubuntu1804cis_rule_6_1_6
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - rule_6.1.6
+
+# - name: "VMSS | PATCH | Ensure access to the su command is restricted - sudo group contains root"
+#   user:
+#     name: root
+#     groups: sudo
+#   when:
+#     - ubuntu1804cis_rule_5_6
+#   tags:
+#     - level1
+#     - patch
+#     - rule_5.6
+#     - scored
+
+# - name: "VMSS | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+#   shell: |
+#     for dir in {{ homes_with_perms.stdout }};
+#     do
+#       chmod g-w,o-rwx $dir;
+#     done
+#   when:
+#     - ubuntu1804cis_rule_6_2_8
+#     - homes_with_perms.stdout | length > 0
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - rule_6.2.8
+
+# - name: "VMSS | PATCH | Ensure default user umask is 077 or more restrictive"
+#   block:
+#     - name: "VMSS | PATCH | Ensure default user umask is 077 or more restrictive - /etc/login.defs"
+#       lineinfile:
+#         state: present
+#         dest: /etc/login.defs
+#         create: true
+#         regexp: "^umask "
+#         line: "umask 077"
+#   when:
+#     - ubuntu1804cis_rule_5_4_4
+#   tags:
+#     - level1
+#     - patch
+#     - rule_5.4.4
+#     - scored
+
+# - name: "VMSS | PATCH | Ensure bootloader password is set - generate password"
+#   shell: "set -o pipefail;
+#     if [ '{{ ubuntu1804cis_bootloader_password }}' == 'random' ];
+#     then PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c12); else PASSWORD='{{ ubuntu1804cis_bootloader_password }}';
+#     fi;
+#     echo -e \"$PASSWORD\n$PASSWORD\" | grub-mkpasswd-pbkdf2 | awk '/grub.pbkdf/{print$NF}'"
+#   register: grub_pass
+#   args:
+#     executable: /bin/bash
+#   when:
+#     - ubuntu1804cis_set_boot_pass
+#     - ubuntu1804cis_rule_1_5_2
+#   tags:
+#     - level1
+#     - scored
+#     - grub
+#     - patch
+#     - rule_1.5.2
+#     - notimplemented
+
+# - name: "VMSS | PATCH | Ensure permissions on bootloader config are configured for grub.cfg"
+#   file:
+#     path: "/boot/grub/grub.cfg"
+#     owner: root
+#     group: root
+#     mode: 0400
+#   when:
+#     - ansible_os_family == "Debian"
+#     - ubuntu1804cis_rule_1_5_1
+#   tags:
+#     - level1
+#     - scored
+#     - grub
+#     - patch
+#     - rule_1.5.1
+
+# - name: "VMSS | PATCH | Ensure packet redirect sending is disabled"
+#   sysctl:
+#     name: "{{ item.name }}"
+#     value: "{{ item.value }}"
+#     sysctl_set: true
+#     state: present
+#     reload: true
+#     ignoreerrors: true
+#   with_items:
+#     - { name: net.ipv4.conf.all.send_redirects, value: 0 }
+#     - { name: net.ipv4.conf.default.send_redirects, value: 0 }
+#   when:
+#     - not ubuntu1804cis_is_router
+#     - ubuntu1804cis_rule_3_1_1
+#   notify:
+#     - sysctl flush ipv4 route table
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - sysctl
+#     - rule_3.1.1
+
+# - name: "VMSS | PATCH | Ensure ICMP redirects are not accepted | ipv4,ipv6"
+#   block:
+#     - name: "VMSS | PATCH | Ensure ICMP redirects are not accepted | ipv4"
+#       sysctl:
+#         name: "{{ item.name }}"
+#         value: "{{ item.value }}"
+#         sysctl_set: true
+#         state: present
+#         reload: true
+#         ignoreerrors: true
+#       with_items:
+#         - { name: net.ipv4.conf.all.accept_redirects, value: 0 }
+#         - { name: net.ipv4.conf.default.accept_redirects, value: 0 }
+#       notify:
+#         - sysctl flush ipv4 route table
+
+#     - name: "VMSS | PATCH | Ensure ICMP redirects are not accepted | ipv6"
+#       sysctl:
+#         name: "{{ item.name }}"
+#         value: "{{ item.value }}"
+#         sysctl_set: true
+#         state: present
+#         reload: true
+#         ignoreerrors: true
+#       with_items:
+#         - { name: net.ipv6.conf.all.accept_redirects, value: 0 }
+#         - { name: net.ipv6.conf.default.accept_redirects, value: 0 }
+#       when:
+#         - ubuntu1804cis_ipv6_required
+#       notify:
+#         - sysctl flush ipv6 route table
+#   when:
+#     - ubuntu1804cis_rule_3_2_2
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - sysctl
+#     - rule_3.2.2
+
+# - name: "VMSS | PATCH | Ensure suspicious packets are logged"
+#   sysctl:
+#     name: "{{ item.name }}"
+#     value: "{{ item.value }}"
+#     sysctl_set: true
+#     state: present
+#     reload: true
+#     ignoreerrors: true
+#   with_items:
+#     - { name: net.ipv4.conf.all.log_martians, value: 1 }
+#     - { name: net.ipv4.conf.default.log_martians, value: 1 }
+#   when:
+#     - ubuntu1804cis_rule_3_2_4
+#   notify:
+#     - sysctl flush ipv4 route table
+#   tags:
+#     - level1
+#     - scored
+#     - patch
+#     - sysctl
+#     - rule_3.2.4
+
+# - name: "VMSS | PATCH | Ensure DCCP is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install dccp(\\s|$)"
+#     line: "install dccp /bin/true"
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_3_4_1
+#   tags:
+#     - level2
+#     - scored
+#     - patch
+#     - rule_3.4.1
+
+# - name: "VMSS | PATCH | Ensure SCTP is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install sctp(\\s|$)"
+#     line: "install sctp /bin/true"
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_3_4_2
+#   tags:
+#     - level2
+#     - scored
+#     - patch
+#     - rule_3.4.2
+
+# - name: "VMSS | PATCH | Ensure RDS is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install rds(\\s|$)"
+#     line: "install rds /bin/true"
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_3_4_3
+#   tags:
+#     - level2
+#     - scored
+#     - patch
+#     - rule_3.4.3
+
+# - name: "VMSS | PATCH | Ensure TIPC is disabled"
+#   lineinfile:
+#     dest: /etc/modprobe.d/CIS.conf
+#     regexp: "^(#)?install tipc(\\s|$)"
+#     line: "install tipc /bin/true"
+#     create: true
+#   when:
+#     - ubuntu1804cis_rule_3_4_4
+#   tags:
+#     - level2
+#     - scored
+#     - patch
+#     - rule_3.4.4
