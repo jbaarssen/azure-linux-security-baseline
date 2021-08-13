@@ -1,7 +1,3 @@
 ---
 - name: "Ensure separate partition exists for /home"
-  command: grep '\s/home\s' /etc/fstab
-  register: home_partition
-  failed_when: home_partition.rc == 1
-  changed_when: false
-  ignore_errors: true
+  command: mount | grep -E "(\s)/home(\s)"
